@@ -30,7 +30,11 @@ const userSchema = new Schema({
         required: false,
         default: 0
     },
-
+    reply:{
+        type:String,
+        required:false,
+        default: ''
+    }
 
 
 

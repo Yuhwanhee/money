@@ -8,6 +8,8 @@ const app = express();
 
 
 const User = require('./models/User')
+const Post = require('./models/Post')
+const PostComment = require('./models/PostComment')
 // const Item = require('./models/Item')
 // const Buy = require('./models/Buy')
 // const Review = require('./models/Review')
@@ -143,6 +145,20 @@ app.post('/point', async (req, res) => {
          res.status(200).json({ point: user.point })
       }
    } catch (err) {
+      console.log(err)
+   }
+})
+
+
+app.get('/fetch-post', async (req,res) => {
+   try {
+      const post = await Post.find()
+      if (!post) {
+         res.status(400).json()
+      } else {
+         res.send(post)
+      }
+   }catch (err) {
       console.log(err)
    }
 })

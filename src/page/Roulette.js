@@ -108,7 +108,7 @@ const Roulette = () => {
 
     const resultSubmit = async () => {
         try {
-            const response = await fetch('http://172.30.1.25:9595/rulet', {
+            const response = await fetch('http://172.30.1.58:9595/rulet', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -130,7 +130,7 @@ const Roulette = () => {
 
     const fetchPoint = async () => {
         try {
-            const response = await fetch('http://172.30.1.25:9595/point', {
+            const response = await fetch('http://172.30.1.58:9595/point', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -154,7 +154,7 @@ const Roulette = () => {
             <Navbar />
             <p style={{ color:'#edab56', marginRight:'30px',position:'absolute',right:80,top:25}}>포인트 : {points}</p>
 
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',marginTop:'70px' }}>
                 <Wheel
                     spinDuration={0.2} // spin속도
                     //디폴트 위치 랜덤으로
