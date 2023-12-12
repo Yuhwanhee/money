@@ -127,7 +127,8 @@ app.post('/rulet', async (req, res) => {
          user.point += count
          await user.save()
 
-         res.status(200).json()
+         res.status(200).json(user.point)
+
       }
    } catch (err) {
       console.log(err)
@@ -150,7 +151,7 @@ app.post('/point', async (req, res) => {
 })
 
 
-app.get('/fetch-post', async (req,res) => {
+app.get('/fetch-post', async (req, res) => {
    try {
       const post = await Post.find()
       if (!post) {
@@ -158,7 +159,56 @@ app.get('/fetch-post', async (req,res) => {
       } else {
          res.send(post)
       }
-   }catch (err) {
+   } catch (err) {
+      console.log(err)
+   }
+})
+
+
+app.post('/fetch-title', async (req, res) => {
+   const { title, write,userId,type } = req.body
+   console.log('qqq', title, write, userId, type)
+   try {
+      const post = new Post({
+         title: title,
+         body: write,
+         poster: userId,
+         type: type
+      })
+      const saved = await post.save()
+      if (saved) {
+         res.status(200).json()
+      }
+   } catch (err) {
+      console.log(err)
+      res.status(500).json()
+   }
+})
+
+
+app.post('/fetch-grade', async (req, res) => {
+   const { userId } = req.body
+   try {
+      const user = await User.findById(userId)
+      if (!user) {
+         res.status(400).json()
+      } else {
+         res.status(200).json(user.grade)
+      }
+   } catch (err) {
+      console.log(err)
+   }
+})
+app.post('/fetch-post-detail', async (req, res) => {
+   const { postId } = req.body
+   try {
+      const post = await Post.findById(postId).populate('poster')
+      if (!post) {
+         res.status(400).json()
+      } else {
+         res.status(200).json(post)
+      }
+   } catch (err) {
       console.log(err)
    }
 })

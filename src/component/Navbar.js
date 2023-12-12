@@ -1,10 +1,16 @@
 import { jwtDecode } from 'jwt-decode'
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { navigate, useNavigate } from 'react-router-dom'
+import { updatePoint } from '../redux/features/pointSlice'
 
 const Navbar = () => {
 
   const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+  const userPoint = useSelector((state) => state.point.point)
+
 
 
   const [isSignUp, setIsSignUp] = useState(false)
@@ -16,7 +22,6 @@ const Navbar = () => {
   const [isId, setIsId] = useState('')
   const [isPw, setIsPw] = useState('')
   const [isAuth, setIsAuth] = useState(false)
-  const [points, setPoints] = useState(0)
 
 
   const [showPw, setShowPw] = useState(false)
@@ -32,7 +37,7 @@ const Navbar = () => {
 
   useEffect(() => {
     fetchPoint()
-  }, [])
+  }, [isAuth])
 
 
 
@@ -40,23 +45,26 @@ const Navbar = () => {
 
 
   const fetchPoint = async () => {
-    try {
-      const response = await fetch('http://172.30.1.58:9595/point', {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
+    if (isAuth) {
+      try {
+        const response = await fetch('http://172.30.1.45:9595/point', {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
 
-        body: JSON.stringify({
-          userId: jwtDecode(localStorage.getItem('token')).id
+          body: JSON.stringify({
+            userId: jwtDecode(localStorage.getItem('token')).id
+          })
         })
-      })
-      const data = await response.json()
-      setPoints(data.point)
-    } catch (err) {
-      console.log(err)
+        const data = await response.json()
+        dispatch(updatePoint(data.point))
+      } catch (err) {
+        console.log(err)
 
+      }
     }
+
   }
 
 
@@ -81,6 +89,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('token')
     setIsAuth(false)
+    navigate('/')
   }
 
 
@@ -91,7 +100,7 @@ const Navbar = () => {
 
   const signUp = async () => {
     try {
-      const response = await fetch('http://172.30.1.58:9595/signup', {
+      const response = await fetch('http://172.30.1.45:9595/signup', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -118,7 +127,7 @@ const Navbar = () => {
 
 
   const handdleLogIn = async () => {
-    const response = await fetch('http://172.30.1.58:9595/login', {
+    const response = await fetch('http://172.30.1.45:9595/login', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -148,7 +157,7 @@ const Navbar = () => {
   return (
     <div>
       <div style={{
-        height: '70px', backgroundColor: '#5e4d30', display: 'flex', justifyContent: 'space-between', position:'fixed',width:'100%',top:0,
+        height: '70px', backgroundColor: '#5e4d30', display: 'flex', justifyContent: 'space-between', position: 'fixed', width: '100%', top: 0,
       }}>
         <img src={`${process.env.PUBLIC_URL}/btq.jpeg`} alt='' style={{
           width: '10%', height: '50px', cursor: 'pointer', margin: 'auto 0'
@@ -161,7 +170,9 @@ const Navbar = () => {
           <p className='change-color' style={{ height: '100%', cursor: ' pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center' }} onClick={() => navigate('/rulet')}>룰렛</p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {/* <p style={{ color:'#edab56', marginRight:'30px'}}>포인트 : {points}</p> */}
+          {isAuth && (
+            <p style={{ color: '#edab56', marginRight: '30px' }}>포인트 : {userPoint.toLocaleString()}</p>
+          )}
           <p style={{ color: '#edab56', cursor: 'pointer', marginRight: '20px' }}
             onClick={() => isAuth ? handleLogout() : ChangeIsLogIn()}>{isAuth ? '로그아웃' : '로그인'}
           </p>

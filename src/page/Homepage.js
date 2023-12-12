@@ -3,16 +3,23 @@ import Navbar from '../component/Navbar'
 import { jwtDecode } from 'jwt-decode'
 import { useNavigate } from 'react-router-dom'
 
+
 const Homepage = () => {
 
   const [reply, setReply] = useState('')
   const [noticePost, setNoticePost] = useState([])
   const [eventPost, setEvnetPost] = useState([])
+  const [isGrade, setIsGrade] = useState(0)
+
+  const navigate = useNavigate()
+
+
+
 
 
   const fetchPost = async () => {
     try {
-      const response = await fetch('http://172.30.1.58:9595/fetch-post')
+      const response = await fetch('http://172.30.1.45:9595/fetch-post')
       const data = await response.json()
 
       const notice = data.filter((post) => post.type === 1)
@@ -27,9 +34,44 @@ const Homepage = () => {
     }
   }
 
+
+  const fetchGrade = async () => {
+    try {
+      const response = await fetch('http://172.30.1.45:9595/fetch-grade', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+
+        body: JSON.stringify({
+          userId: jwtDecode(localStorage.getItem('token')).id
+        })
+      })
+      if (response.status === 200) {
+        const data = await response.json()
+        setIsGrade(data)
+      }
+    } catch (err) {
+      console.log(err)
+
+    }
+  }
+
+
+
   useEffect(() => {
     fetchPost()
   }, [])
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      return
+    } else {
+      fetchGrade()
+    }
+  }, [])
+
+
 
 
 
@@ -46,11 +88,23 @@ const Homepage = () => {
   // console.log(newArray)
 
 
-const navigate = useNavigate()
 
 
 
 
+  const goToPost = (type, id) => {
+    if (isGrade === 6) {
+      if (type === 'notice') {
+        navigate('/post/notice')
+      } else if (type === 'event') {
+        navigate('/post/event')
+      } else {
+        return
+      }
+    } else {
+      navigate(`/board/${id}`)
+    }
+  }
 
 
 
@@ -87,8 +141,8 @@ const navigate = useNavigate()
                 <div style={{ backgroundColor: '#181a20', width: '100%', height: '100px', overflow: 'scroll', color: 'white' }}>
                   {noticePost.map((post, index) => (
                     <div key={index}>
-                      <p style={{cursor:'pointer'}} onClick={()=> navigate('/post')}>
-                      {post.title}
+                      <p style={{ cursor: 'pointer' }} onClick={() => goToPost('notice', post._id)}>
+                        {post.title}
                       </p>
                     </div>
                   ))}
@@ -109,7 +163,7 @@ const navigate = useNavigate()
                 <div style={{ backgroundColor: '#181a20', width: '100%', height: '100px', overflow: 'scroll', color: 'white' }}>
                   {eventPost.map((post, index) => (
                     <div key={index}>
-                      <p style={{cursor:'pointer'}} onClick={()=> navigate('/post')}>
+                      <p style={{ cursor: 'pointer' }} onClick={() => goToPost('event', post._id)}>
                         {post.title}
                       </p>
                     </div>

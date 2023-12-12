@@ -3,11 +3,14 @@ import { Wheel } from 'react-custom-roulette';
 import Navbar from '../component/Navbar';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { updatePoint } from '../redux/features/pointSlice';
 
 const Roulette = () => {
 
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     //룰렛이 회전 애니메이션을 시작
     const [mustSpin, setMustSpin] = useState(false);
     const [prizeNumber, setPrizeNumber] = useState(0);//당첨 인덱스
@@ -108,7 +111,7 @@ const Roulette = () => {
 
     const resultSubmit = async () => {
         try {
-            const response = await fetch('http://172.30.1.58:9595/rulet', {
+            const response = await fetch('http://172.30.1.45:9595/rulet', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -119,8 +122,9 @@ const Roulette = () => {
                     prize: prizeNumber
                 })
             })
-            if (response.status !== 200) {
-                alert('통신 실패')
+            if (response.status === 200) {
+                const data = await response.json()
+                dispatch(updatePoint(data))
             }
         } catch (err) {
             console.log(err)
@@ -130,7 +134,7 @@ const Roulette = () => {
 
     const fetchPoint = async () => {
         try {
-            const response = await fetch('http://172.30.1.58:9595/point', {
+            const response = await fetch('http://172.30.1.45:9595/point', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -152,8 +156,6 @@ const Roulette = () => {
     return (
         <div style={{ backgroundColor: 'black', width: '100%', height: '1000px' }}>
             <Navbar />
-            <p style={{ color:'#edab56', marginRight:'30px',position:'absolute',right:80,top:25}}>포인트 : {points}</p>
-
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center',marginTop:'70px' }}>
                 <Wheel
                     spinDuration={0.2} // spin속도
