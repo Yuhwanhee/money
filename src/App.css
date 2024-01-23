@@ -9,16 +9,16 @@
 .flex {
   display: flex;
 }
+
 .j-center {
   justify-content: center;
 }
+
 .a-center {
   align-items: center;
 }
 
-.change-color {
-  
-}
+.change-color {}
 
 .change-color:hover {
   transition: 0s ease-out;
@@ -27,4 +27,11 @@
 
 .change-color:not(:hover) {
   transition: 0s ease-out
+}
+
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

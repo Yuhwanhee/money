@@ -111,7 +111,7 @@ const Roulette = () => {
 
     const resultSubmit = async () => {
         try {
-            const response = await fetch('http://172.30.1.45:9595/rulet', {
+            const response = await fetch('http://172.30.1.78:9595/rulet', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'
@@ -134,7 +134,7 @@ const Roulette = () => {
 
     const fetchPoint = async () => {
         try {
-            const response = await fetch('http://172.30.1.45:9595/point', {
+            const response = await fetch('http://172.30.1.78:9595/point', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'

@@ -10,6 +10,7 @@ const Homepage = () => {
   const [noticePost, setNoticePost] = useState([])
   const [eventPost, setEvnetPost] = useState([])
   const [isGrade, setIsGrade] = useState(0)
+  const [isButton, setIsButton] = useState(false)
 
   const navigate = useNavigate()
 
@@ -19,7 +20,7 @@ const Homepage = () => {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch('http://172.30.1.45:9595/fetch-post')
+      const response = await fetch('http://172.30.1.78:9595/fetch-post')
       const data = await response.json()
 
       const notice = data.filter((post) => post.type === 1)
@@ -37,7 +38,7 @@ const Homepage = () => {
 
   const fetchGrade = async () => {
     try {
-      const response = await fetch('http://172.30.1.45:9595/fetch-grade', {
+      const response = await fetch('http://172.30.1.78:9595/fetch-grade', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -93,19 +94,16 @@ const Homepage = () => {
 
 
   const goToPost = (type, id) => {
-    if (isGrade === 6) {
-      if (type === 'notice') {
-        navigate('/post/notice')
-      } else if (type === 'event') {
-        navigate('/post/event')
-      } else {
-        return
-      }
-    } else {
-      navigate(`/board/${id}`)
-    }
+    navigate(`/board/${id}`)
   }
 
+
+
+  const Gbutton = () => {
+    if (isGrade === 6) {
+      setIsButton(true)
+    }
+  }
 
 
 
@@ -126,15 +124,25 @@ const Homepage = () => {
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
 
 
-            <div style={{ width: '80%', height: '40px', marginTop: '50px', display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ width: '80%', height: '40px', marginTop: '50px', display: 'flex', justifyContent: 'space-between'}}>
 
-              <div>
-                <div style={{
-                  backgroundColor: '#edab56', width: '350px', height: '40px', display: 'flex', justifyContent: 'center',
-                  alignItems: 'center', borderRadius: '5px'
-                }}>
-                  공지 규정/notice Rules
+              <div >
+                <div style={{ display: 'flex' ,justifyContent:'center', alignItems:'center'}}>
+                  <div style={{
+                    backgroundColor: '#edab56', width: '350px', height: '40px', display: 'flex', justifyContent: 'center',
+                    alignItems: 'center', borderRadius: '5px'
+                  }}>
+                    공지 규정/notice Rules
+                  </div>
+                  {isGrade === 6 && (
+                    <div className='center' style={{ border: '1px solid yellow', height:'30px',width: '50px', cursor: 'pointer', backgroundColor:'white' , marginLeft:'10px'}} onClick={() => navigate('/post/notice')} > 
+                    작성
+                    </div>
+                  )}
+
+
                 </div>
+
 
 
 
@@ -150,15 +158,21 @@ const Homepage = () => {
               </div>
 
               <div>
+                <div style={{ display: 'flex' }}>
+
+                  <div style={{
+                    backgroundColor: '#edab56', width: '350px', height: '40px', display: 'flex', justifyContent: 'center',
+                    alignItems: 'center', borderRadius: '5px'
+                  }}>
+                    이벤트존 event
+                  </div>
 
 
-                <div style={{
-                  backgroundColor: '#edab56', width: '350px', height: '40px', display: 'flex', justifyContent: 'center',
-                  alignItems: 'center', borderRadius: '5px'
-                }}>
-                  이벤트존 event
+                  {isGrade === 6 && (
+                    <div style={{ border: '1px solid yellow', width: '100px', cursor: 'pointer' }} onClick={() => navigate('/post/event')} > qjtoen</div>
+                  )}
+
                 </div>
-
 
                 <div style={{ backgroundColor: '#181a20', width: '100%', height: '100px', overflow: 'scroll', color: 'white' }}>
                   {eventPost.map((post, index) => (

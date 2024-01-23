@@ -18,7 +18,7 @@ const Board = () => {
 
    const fetchData = async () => {
       try {
-         const response = await fetch('http://172.30.1.45:9595/fetch-post-detail', {
+         const response = await fetch('http://172.30.1.78:9595/fetch-post-detail', {
             method: 'POST',
             headers: {
                'Content-type': 'application/json'
@@ -38,14 +38,18 @@ const Board = () => {
    }
 
    return (
-      <div style={{ marginTop: '70px', backgroundColor: 'black', width: '100%', height: '900px' }}>
+      <div style={{  backgroundColor: 'black', width: '100%', height: '900px' }}>
          <Navbar />
 
-         {/* <div style={{marginTop:'200px'}}> */}
-            <h1 style={{color:'white'}}>{post.title && post.title}</h1>
+         <div  style={{backgroundColor:'black',paddingTop:'70px'}}>
+            <h1 style={{color:'white', textAlign:'center',marginTop:'20px'}}>{post.title && post.title}</h1>
+
+            <div style={{ width:'800px', margin:'0 auto', height:'auto', marginTop:'50px'}}>
+
             <p style={{color:'white'}}>{post.body && post.body}</p>
             <p style={{color:'white'}}>작성자 : {post.poster && post.poster.name}</p>
-         {/* </div> */}
+            </div>
+         </div>
 
       </div>
    )

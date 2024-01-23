@@ -47,7 +47,7 @@ const Navbar = () => {
   const fetchPoint = async () => {
     if (isAuth) {
       try {
-        const response = await fetch('http://172.30.1.45:9595/point', {
+        const response = await fetch('http://172.30.1.78:9595/point', {
           method: 'POST',
           headers: {
             'Content-type': 'application/json'
@@ -90,6 +90,7 @@ const Navbar = () => {
     localStorage.removeItem('token')
     setIsAuth(false)
     navigate('/')
+    window.location.reload()
   }
 
 
@@ -100,7 +101,7 @@ const Navbar = () => {
 
   const signUp = async () => {
     try {
-      const response = await fetch('http://172.30.1.45:9595/signup', {
+      const response = await fetch('http://172.30.1.78:9595/signup', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -127,7 +128,7 @@ const Navbar = () => {
 
 
   const handdleLogIn = async () => {
-    const response = await fetch('http://172.30.1.45:9595/login', {
+    const response = await fetch('http://172.30.1.78:9595/login', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -144,11 +145,15 @@ const Navbar = () => {
       localStorage.setItem('token', token);
       setIsLogIn(false)
       setIsAuth(true)
+      window.location.reload()
     } else if (response.status === 400) {
       alert('통실')
     }
 
   }
+
+
+
 
 
 
