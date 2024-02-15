@@ -20,7 +20,7 @@ const Homepage = () => {
 
   const fetchPost = async () => {
     try {
-      const response = await fetch('http://172.30.1.78:9595/fetch-post')
+      const response = await fetch('http://192.168.0.19:9595/fetch-post')
       const data = await response.json()
 
       const notice = data.filter((post) => post.type === 1)
@@ -38,7 +38,7 @@ const Homepage = () => {
 
   const fetchGrade = async () => {
     try {
-      const response = await fetch('http://172.30.1.78:9595/fetch-grade', {
+      const response = await fetch('http://192.168.0.19:9595/fetch-grade', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'

@@ -33,7 +33,7 @@ const Post = () => {
             postType = 2
         }
         try {
-            const response = await fetch('http://172.30.1.78:9595/fetch-title', {
+            const response = await fetch('http://192.168.0.19:9595/fetch-title', {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json'

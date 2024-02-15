@@ -18,7 +18,7 @@ const Board = () => {
 
    const fetchData = async () => {
       try {
-         const response = await fetch('http://172.30.1.78:9595/fetch-post-detail', {
+         const response = await fetch('http://192.168.0.19:9595/fetch-post-detail', {
             method: 'POST',
             headers: {
                'Content-type': 'application/json'
